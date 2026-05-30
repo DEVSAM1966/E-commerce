@@ -1,7 +1,7 @@
 package com.devsam.backend.ecommerce.infrastructure.mapper;
 
 import com.devsam.backend.ecommerce.domain.model.User;
-import com.devsam.backend.ecommerce.infrastructure.UserEntity;
+import com.devsam.backend.ecommerce.infrastructure.entity.UserEntity;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

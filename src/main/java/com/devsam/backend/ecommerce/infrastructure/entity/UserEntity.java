@@ -1,4 +1,4 @@
-package com.devsam.backend.ecommerce.infrastructure;
+package com.devsam.backend.ecommerce.infrastructure.entity;
 
 import com.devsam.backend.ecommerce.domain.model.UserType;
 import jakarta.persistence.*;
