@@ -11,19 +11,19 @@ import java.util.List;
 public class Order {
     private Integer id;
     private LocalDateTime dateCreated;
-    private List<OrderProduct> ordenProducts;
+    private List<OrderProduct> orderProducts;
     private OrderState orderState;
     private Integer userId;
 
     // Constructor de ordenProducts sin parámetros para crear la lista
     public Order() {
-        ordenProducts = new ArrayList<>();
+        orderProducts = new ArrayList<>();
     }
 
     // Función para calcular el valor de cada ordenProducts que tenga
     // la cabecera Order
     public BigDecimal getTotalOrderPrice() {
-        return this.ordenProducts.stream().map(
+        return this.orderProducts.stream().map(
                 ordenProduct -> ordenProduct.getTotalItem() )
                 .reduce(BigDecimal.ZERO,BigDecimal::add);
     }
