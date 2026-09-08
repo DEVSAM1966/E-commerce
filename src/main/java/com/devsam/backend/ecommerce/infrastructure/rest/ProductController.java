@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("api/v1/admin/products")
 @Slf4j
@@ -20,7 +22,21 @@ public class ProductController {
 
     // Implementar el método save()
     @PostMapping
-    public ResponseEntity<Product> save(@RequestBody Product product) {
+    public ResponseEntity<Product> save(@RequestParam("name") String name,
+                                        @RequestParam("code") String code,
+                                        @RequestParam("description") String description,
+                                        @RequestParam("price") BigDecimal price,
+                                        @RequestParam("urlImage") String urlImage,
+                                        @RequestParam("userId") Integer userId,
+                                        @RequestParam("categoryId") Integer categoryId) {
+        Product product = new Product();
+        product.setName(name);
+        product.setCode(code);
+        product.setDescription(description);
+        product.setPrice(price);
+        product.setUrlImage(urlImage);
+        product.setUserId(userId);
+        product.setCategoryId(categoryId);
 
         log.info("Nombre del producto creado: {}", product.getName());
         return new ResponseEntity<>(productService.save(product), HttpStatus.CREATED);
