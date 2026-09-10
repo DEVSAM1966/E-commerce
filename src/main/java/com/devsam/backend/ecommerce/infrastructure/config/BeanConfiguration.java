@@ -1,9 +1,6 @@
 package com.devsam.backend.ecommerce.infrastructure.config;
 
-import com.devsam.backend.ecommerce.application.CategoryService;
-import com.devsam.backend.ecommerce.application.OrderService;
-import com.devsam.backend.ecommerce.application.ProductService;
-import com.devsam.backend.ecommerce.application.UserService;
+import com.devsam.backend.ecommerce.application.*;
 import com.devsam.backend.ecommerce.domain.port.ICategoryRepository;
 import com.devsam.backend.ecommerce.domain.port.IOrderRepository;
 import com.devsam.backend.ecommerce.domain.port.IProductRepository;
@@ -24,8 +21,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public ProductService productService(IProductRepository iProductRepository) {
-        return new ProductService(iProductRepository);
+    public ProductService productService(IProductRepository iProductRepository, UploadFile uploadFile) {
+        return new ProductService(iProductRepository, uploadFile);
     }
 
     @Bean

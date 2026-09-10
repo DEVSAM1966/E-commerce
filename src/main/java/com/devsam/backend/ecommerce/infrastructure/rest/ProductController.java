@@ -7,7 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
 @RestController
@@ -22,14 +24,27 @@ public class ProductController {
 
     // Implementar el método save()
     @PostMapping
-    public ResponseEntity<Product> save(@RequestParam("name") String name,
+    public ResponseEntity<Product> save(@RequestParam(value = "id", required = false) Integer id,
+                                        @RequestParam("name") String name,
                                         @RequestParam("code") String code,
                                         @RequestParam("description") String description,
                                         @RequestParam("price") BigDecimal price,
                                         @RequestParam("urlImage") String urlImage,
                                         @RequestParam("userId") Integer userId,
-                                        @RequestParam("categoryId") Integer categoryId) {
+                                        @RequestParam("categoryId") Integer categoryId,
+                                        @RequestParam(value = "image", required = false)MultipartFile multipartFile
+                                        )  throws IOException {
+        System.out.println("RECIBO ");
+        System.out.println("Id: " + id + " Name: " + name + " Code: " + code + " Description: " + description + " Url: " + urlImage + "");
+
         Product product = new Product();
+
+        if (id != null && id != 0) {
+            product.setId(id); // update
+            System.out.println("El valor que asigno a id producto es: " + product.getId());
+        } else {
+            product.setId(null); // create
+        }
         product.setName(name);
         product.setCode(code);
         product.setDescription(description);
@@ -37,9 +52,11 @@ public class ProductController {
         product.setUrlImage(urlImage);
         product.setUserId(userId);
         product.setCategoryId(categoryId);
+        System.out.println("---------------------------------------------------------------------------");
+        System.out.println("Name: " + product.getName() + " Description: " + product.getDescription() + " Url: " + product.getUrlImage() + "");
 
         log.info("Nombre del producto creado: {}", product.getName());
-        return new ResponseEntity<>(productService.save(product), HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.save(product, multipartFile), HttpStatus.CREATED);
     }
 
     // Implementar el método findAll()
