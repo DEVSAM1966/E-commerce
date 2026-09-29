@@ -2,14 +2,18 @@ package com.devsam.backend.ecommerce.infrastructure.rest;
 
 import com.devsam.backend.ecommerce.application.CategoryService;
 import com.devsam.backend.ecommerce.domain.model.Category;
+import com.devsam.backend.ecommerce.domain.model.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("api/v1/admin/categories")
 @Slf4j
+@CrossOrigin(origins = "http://localhost:4200")
 public class CategoryController {
 
     // Variable para usar el service
@@ -22,7 +26,11 @@ public class CategoryController {
 
     // Implementar el método save()
     @PostMapping
-    public ResponseEntity<Category> save(@RequestBody Category category) {
+    public ResponseEntity<Category> save(@RequestBody Category category)  throws IOException {
+
+        if (category.getId() == null || category.getId() == 0) {
+            category.setId(null); // CREATE
+        }
 
         return new ResponseEntity<>(categoryService.save(category), HttpStatus.CREATED);
     }
