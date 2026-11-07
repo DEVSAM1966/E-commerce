@@ -16,8 +16,8 @@ import org.springframework.web.servlet.view.RedirectView;
 @CrossOrigin(origins = "http://localhost:4200")
 public class PaypalController {
     private final PaypalService paypalService;
-    private final String SUCCESS_URL = "http:localhost:8085/api/v1/payments/success";
-    private final String CANCEL_URL = "http:localhost:8085/api/v1/payments/cancel";
+    private final String SUCCESS_URL = "http://localhost:8085/api/v1/payments/success";
+    private final String CANCEL_URL = "http://localhost:8085/api/v1/payments/cancel";
 
     // Método para verificar que los datos recibidos en Frontend son correctos
     @PostMapping
@@ -44,7 +44,7 @@ public class PaypalController {
         }
 
         // Si el pago no es aprobado por Paypal devolvemos esto
-        return new URLPaypalResponse("");
+        return new URLPaypalResponse("http://localhost:4200");
     }
 
     // Método para obtener el OK del pago en Paypal
@@ -56,12 +56,13 @@ public class PaypalController {
             Payment payment = paypalService.executePayment(paymentId, payerId);
             if (payment.getState().equals("approved")) {
                 // Devolvemos a un componente del frontend para indicar el OK del pago
-                return new RedirectView("http:localhost:4200/payment/success");
+                // return new RedirectView("http:localhost:4200/payment/success");
+                return new RedirectView("http://localhost:4200");
             }
         } catch (PayPalRESTException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return new RedirectView("http://localhost:4200");
     }
 
     // Método para recoger la cancelación del cliente en el pago
