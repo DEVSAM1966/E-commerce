@@ -1,6 +1,7 @@
 package com.devsam.backend.ecommerce.infrastructure.rest;
 
 import com.devsam.backend.ecommerce.domain.model.DataPayment;
+import com.devsam.backend.ecommerce.domain.model.URLPaypalResponse;
 import com.devsam.backend.ecommerce.infrastructure.service.PaypalService;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
@@ -20,7 +21,7 @@ public class PaypalController {
 
     // Método para verificar que los datos recibidos en Frontend son correctos
     @PostMapping
-    public String createPayment(@RequestBody DataPayment dataPayment) {
+    public URLPaypalResponse createPayment(@RequestBody DataPayment dataPayment) {
         // Creamos un objeto Payment invocando el constructor con sus parámetros (atención a esta parte)
         try {
             Payment payment = paypalService.createPayment(
@@ -34,14 +35,16 @@ public class PaypalController {
             // Verificamos el pago preguntando a Paypal
             for (Links links : payment.getLinks()) {
                 if (links.getRel().equals("approval_url")) {
-                    return links.getHref();
+                    // Paypal aprobo el pago
+                    return new URLPaypalResponse(links.getHref());
                 }
             }
         } catch (PayPalRESTException e) {
             throw new RuntimeException(e);
         }
 
-        return "";
+        // Si el pago no es aprobado por Paypal devolvemos esto
+        return new URLPaypalResponse("");
     }
 
     // Método para obtener el OK del pago en Paypal
