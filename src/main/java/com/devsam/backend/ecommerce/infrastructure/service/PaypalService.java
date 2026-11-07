@@ -57,6 +57,7 @@ public class PaypalService {
         RedirectUrls redirectUrls = new RedirectUrls();
         redirectUrls.setReturnUrl(successUrl);  // Si se aprueba el pago por Paypal
         redirectUrls.setCancelUrl(cancelUrl);   // Si no se aprueba el pago por Paypal
+        payment.setRedirectUrls(redirectUrls);
 
         return payment.create(apiContext);
     }
